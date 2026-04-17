@@ -1,11 +1,11 @@
 import { notFound } from 'next/navigation'
-import Image from 'next/image'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import { Navbar } from '@/components/common/Navbar'
 import { AttributeIcon } from '@/components/brewery/AttributeIcon'
 import { getStorageUrl, formatTime, DAY_LABELS } from '@/lib/utils'
+import { PhotoCarousel } from '@/components/brewery/PhotoCarousel'
 
 type Params = { slug: string }
 
@@ -78,7 +78,6 @@ export default async function BreweryProfilePage({
   const photos = (brewery.photos ?? []).sort(
     (a: { display_order: number }, b: { display_order: number }) => a.display_order - b.display_order
   )
-  const primaryPhoto = photos.find((p: { is_primary: boolean }) => p.is_primary) ?? photos[0]
   const hasEvents = (brewery.events ?? []).some((e: { is_active: boolean }) => e.is_active)
 
   return (
@@ -91,35 +90,12 @@ export default async function BreweryProfilePage({
           ← All Breweries
         </Link>
 
-        {/* Hero photo */}
-        {primaryPhoto && (
-          <div className="relative mb-6 aspect-[16/7] overflow-hidden rounded-2xl bg-amber-50">
-            <Image
-              src={getStorageUrl(primaryPhoto.storage_path)}
-              alt={brewery.name}
-              fill
-              className="object-cover"
-              priority
-              sizes="(max-width: 896px) 100vw, 896px"
-            />
-          </div>
-        )}
-
-        {/* Thumbnail strip */}
-        {photos.length > 1 && (
-          <div className="mb-6 flex gap-2 overflow-x-auto pb-1">
-            {photos.slice(1).map((photo: { id: string; storage_path: string }) => (
-              <div key={photo.id} className="relative h-20 w-28 shrink-0 overflow-hidden rounded-xl bg-amber-50">
-                <Image
-                  src={getStorageUrl(photo.storage_path)}
-                  alt=""
-                  fill
-                  className="object-cover"
-                  sizes="112px"
-                />
-              </div>
-            ))}
-          </div>
+        {/* Photo carousel */}
+        {photos.length > 0 && (
+          <PhotoCarousel
+            photos={photos}
+            breweryName={brewery.name}
+          />
         )}
 
         <div className="grid gap-8 lg:grid-cols-3">
