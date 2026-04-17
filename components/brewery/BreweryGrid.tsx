@@ -53,12 +53,13 @@ export function BreweryGrid({ breweries, initialFavoritedIds, isLoggedIn }: Prop
 
   return (
     <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {breweries.map((brewery) => (
+      {breweries.map((brewery, i) => (
         <BreweryCard
           key={brewery.id}
           brewery={brewery}
           isFavorited={favoritedIds.has(brewery.id)}
           onToggleFavorite={isLoggedIn ? handleToggleFavorite : undefined}
+          priority={i === 0}
         />
       ))}
     </div>

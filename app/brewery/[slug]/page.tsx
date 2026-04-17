@@ -1,13 +1,24 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { Navbar } from '@/components/common/Navbar'
 import { AttributeIcon } from '@/components/brewery/AttributeIcon'
 import { getStorageUrl, formatTime, DAY_LABELS } from '@/lib/utils'
 import { PhotoCarousel } from '@/components/brewery/PhotoCarousel'
 
 type Params = { slug: string }
+
+// Pre-generate all active brewery pages at build time.
+// Vercel serves these from the CDN edge — no DB call on each visit.
+export async function generateStaticParams() {
+  const supabase = createAdminClient()
+  const { data } = await supabase
+    .from('breweries')
+    .select('slug')
+    .eq('is_active', true)
+  return (data ?? []).map((b) => ({ slug: b.slug }))
+}
 
 // SSR — generates page-specific metadata for SEO
 export async function generateMetadata({

@@ -8,9 +8,10 @@ interface Props {
   brewery: Brewery
   isFavorited?: boolean
   onToggleFavorite?: (breweryId: string) => void
+  priority?: boolean
 }
 
-export function BreweryCard({ brewery, isFavorited, onToggleFavorite }: Props) {
+export function BreweryCard({ brewery, isFavorited, onToggleFavorite, priority = false }: Props) {
   const primaryPhoto = brewery.photos?.find((p) => p.is_primary) ?? brewery.photos?.[0]
   const photoUrl = primaryPhoto ? getStorageUrl(primaryPhoto.storage_path) : null
 
@@ -23,6 +24,7 @@ export function BreweryCard({ brewery, isFavorited, onToggleFavorite }: Props) {
             src={photoUrl}
             alt={brewery.name}
             fill
+            priority={priority}
             className="object-cover transition-transform duration-300 group-hover:scale-105"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
