@@ -15,7 +15,7 @@ export async function POST(request: NextRequest, ctx: Ctx) {
   }
 
   const { id: breweryId } = await ctx.params
-  const supabase = await createAdminClient()
+  const supabase = createAdminClient()
 
   const formData = await request.formData()
   const file = formData.get('file') as File | null

@@ -27,7 +27,7 @@ export async function PUT(request: NextRequest, ctx: Ctx) {
     return errorResponse(parsed.error.issues[0].message, 400)
   }
 
-  const supabase = await createAdminClient()
+  const supabase = createAdminClient()
   const { data, error } = await supabase
     .from('user_profiles')
     .update(parsed.data)

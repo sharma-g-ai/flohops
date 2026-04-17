@@ -4,7 +4,7 @@ import { QueueList } from '@/components/admin/QueueList'
 export const metadata = { title: 'Admin Queue' }
 
 export default async function QueuePage() {
-  const supabase = await createAdminClient()
+  const supabase = createAdminClient()
 
   const { data: requests } = await supabase
     .from('change_requests')

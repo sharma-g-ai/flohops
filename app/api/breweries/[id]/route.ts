@@ -45,7 +45,7 @@ export async function PUT(request: NextRequest, ctx: Ctx) {
     return errorResponse(parsed.error.issues[0].message, 400)
   }
 
-  const supabase = await createAdminClient()
+  const supabase = createAdminClient()
   const { data, error } = await supabase
     .from('breweries')
     .update(parsed.data)
@@ -69,7 +69,7 @@ export async function DELETE(_req: NextRequest, ctx: Ctx) {
   }
 
   const { id } = await ctx.params
-  const supabase = await createAdminClient()
+  const supabase = createAdminClient()
 
   const { error } = await supabase
     .from('breweries')

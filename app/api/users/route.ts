@@ -10,7 +10,7 @@ export async function GET() {
     return response as Response
   }
 
-  const supabase = await createAdminClient()
+  const supabase = createAdminClient()
 
   // Join user_profiles with auth.users via the Supabase admin auth API
   const { data: profiles, error } = await supabase

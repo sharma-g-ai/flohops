@@ -4,7 +4,7 @@ import { createAdminClient } from '@/lib/supabase/server'
 export const metadata = { title: 'Manage Breweries' }
 
 export default async function AdminBreweriesPage() {
-  const supabase = await createAdminClient()
+  const supabase = createAdminClient()
 
   const { data: breweries } = await supabase
     .from('breweries')

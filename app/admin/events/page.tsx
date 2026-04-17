@@ -4,7 +4,7 @@ import { EventManager } from '@/components/admin/EventManager'
 export const metadata = { title: 'Manage Events' }
 
 export default async function AdminEventsPage() {
-  const supabase = await createAdminClient()
+  const supabase = createAdminClient()
 
   const { data: breweries } = await supabase
     .from('breweries')

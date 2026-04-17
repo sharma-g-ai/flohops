@@ -15,7 +15,7 @@ export async function PUT(request: NextRequest, ctx: Ctx) {
 
   const { id: breweryId, photoId } = await ctx.params
   const body = await request.json() as { is_primary?: boolean; display_order?: number }
-  const supabase = await createAdminClient()
+  const supabase = createAdminClient()
 
   // If setting as primary, clear all other photos' primary flag first
   if (body.is_primary) {
@@ -49,7 +49,7 @@ export async function DELETE(_req: NextRequest, ctx: Ctx) {
   }
 
   const { id: breweryId, photoId } = await ctx.params
-  const supabase = await createAdminClient()
+  const supabase = createAdminClient()
 
   // Get storage path before deleting the record
   const { data: photo } = await supabase

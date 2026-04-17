@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
   // Get current user if logged in (optional)
   const { data: { user } } = await supabase.auth.getUser()
 
-  const adminSupabase = await createAdminClient()
+  const adminSupabase = createAdminClient()
   const { data, error } = await adminSupabase
     .from('change_requests')
     .insert({
@@ -29,6 +29,7 @@ export async function POST(request: NextRequest) {
     .single()
 
   if (error) {
+    console.error('[POST /api/requests] Supabase error:', error)
     return errorResponse('Failed to submit request', 500)
   }
 
@@ -46,7 +47,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl
   const status = searchParams.get('status') ?? 'pending'
 
-  const supabase = await createAdminClient()
+  const supabase = createAdminClient()
   const { data, error } = await supabase
     .from('change_requests')
     .select(`

@@ -8,14 +8,14 @@ type Params = { id: string }
 
 export async function generateMetadata({ params }: { params: Promise<Params> }) {
   const { id } = await params
-  const supabase = await createAdminClient()
+  const supabase = createAdminClient()
   const { data } = await supabase.from('breweries').select('name').eq('id', id).single()
   return { title: data ? `Edit — ${data.name}` : 'Edit Brewery' }
 }
 
 export default async function EditBreweryPage({ params }: { params: Promise<Params> }) {
   const { id } = await params
-  const supabase = await createAdminClient()
+  const supabase = createAdminClient()
 
   const { data: brewery } = await supabase
     .from('breweries')

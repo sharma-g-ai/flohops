@@ -31,27 +31,16 @@ export async function createClient() {
 }
 
 // Admin client using the service role key — bypasses RLS.
-// Only use in Route Handlers that enforce role checks manually.
-export async function createAdminClient() {
-  const cookieStore = await cookies()
-
+// Must NOT use request cookies — passing a user session would cause @supabase/ssr
+// to override the service role key with the user's JWT for all API calls.
+export function createAdminClient() {
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
     {
       cookies: {
-        getAll() {
-          return cookieStore.getAll()
-        },
-        setAll(cookiesToSet) {
-          try {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
-            )
-          } catch {
-            // intentionally ignored — see note above
-          }
-        },
+        getAll() { return [] },
+        setAll() {},
       },
     }
   )

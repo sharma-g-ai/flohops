@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     return errorResponse(parsed.error.issues[0].message, 400)
   }
 
-  const supabase = await createAdminClient()
+  const supabase = createAdminClient()
   const { data, error } = await supabase
     .from('events')
     .insert(parsed.data)

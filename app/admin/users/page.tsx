@@ -4,7 +4,7 @@ import { UserRoleManager } from '@/components/admin/UserRoleManager'
 export const metadata = { title: 'Manage Users' }
 
 export default async function AdminUsersPage() {
-  const supabase = await createAdminClient()
+  const supabase = createAdminClient()
 
   const { data: rawProfiles } = await supabase
     .from('user_profiles')
